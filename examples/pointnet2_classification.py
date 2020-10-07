@@ -40,10 +40,16 @@ class GlobalSAModule(torch.nn.Module):
 
 
 def MLP(channels, batch_norm=True):
-    return Seq(*[
-        Seq(Lin(channels[i - 1], channels[i]), ReLU(), BN(channels[i]))
-        for i in range(1, len(channels))
-    ])
+    if batch_norm:
+        return Seq(*[
+            Seq(Lin(channels[i - 1], channels[i]), ReLU(), BN(channels[i]))
+            for i in range(1, len(channels))
+        ])
+    else:
+        return Seq(*[
+            Seq(Lin(channels[i - 1], channels[i]), ReLU())
+            for i in range(1, len(channels))
+        ])
 
 
 class Net(torch.nn.Module):
